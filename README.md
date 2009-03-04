@@ -32,8 +32,9 @@ Use
 
 Credits
 -------
-Code: Roberto Soares http://peakhut.com
-Idea: Bruno Miranda http://brunomiranda.com
-Name: Chris Saylor http://twitter.com/cwsaylor
+
+* Code: Roberto Soares http://peakhut.com
+* Idea: Bruno Miranda http://brunomiranda.com
+* Name: Chris Saylor http://twitter.com/cwsaylor
 
 Copyright (c) 2009 Roberto Soares, released under the MIT license
