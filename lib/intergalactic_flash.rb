@@ -1,3 +1,5 @@
+require 'uri'
+
 module IntergalacticFlash
   def self.included(base)
     base.prepend_before_filter :catch_flash_from_params
@@ -9,7 +11,7 @@ module IntergalacticFlash
     params.each do |key, value|
       key = key.to_s
       if key[/^flash_/] && !value.blank?
-        flash[key.gsub(/^flash_/, '').to_sym] = value
+        flash[key.gsub(/^flash_/, '').to_sym] = URI.decode(value)
         detected_flash_message = true
       end
     end
@@ -22,7 +24,7 @@ module IntergalacticFlash
     unless flash.blank?
       url << "?" if url.index("?").nil?
       url << flash.collect do |key, value|
-        "flash_#{key}=#{value}" if value
+        "flash_#{key}=#{URI.encode(value)}" if value
       end.compact.join('&')
     end
 
