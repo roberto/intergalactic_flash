@@ -1,4 +1,5 @@
 require 'uri'
+require 'base64'
 
 module IntergalacticFlash
   def self.included(base)
@@ -11,12 +12,12 @@ module IntergalacticFlash
     params.each do |key, value|
       key = key.to_s
       if key[/^flash_/] && !value.blank?
-        flash[key.gsub(/^flash_/, '').to_sym] = URI.decode(value)
+        flash[key.gsub(/^flash_/, '').to_sym] = URI.decode(Base64.decode64(value))
         detected_flash_message = true
       end
     end
     
-    return redirect_to request.path if detected_flash_message #FIXME losing other params
+    redirect_to(request.path) if detected_flash_message && request.get? #FIXME losing other params
   end
   private :catch_flash_from_params
   
@@ -24,7 +25,7 @@ module IntergalacticFlash
     unless flash.blank?
       url << "?" if url.index("?").nil?
       url << flash.collect do |key, value|
-        "flash_#{key}=#{URI.encode(value)}" if value
+        "flash_#{key}=#{URI.encode(Base64.encode64(value))}" if value
       end.compact.join('&')
     end
 
